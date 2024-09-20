@@ -1,23 +1,23 @@
-// Import necessary module
-import { createServer } from 'node:http';
+import { createServer } from 'http';
 
-// Define the port number
-const PORT = 3000;
+const PORT = 4000;
 
-// Create server
 const server = createServer((req, res) => {
-    const { method, url } = req; // Extract method and URL
+    const { method, url } = req;
+    const parsedUrl = new URL(url, `http://${req.headers.host}`);
 
-    // Home route for GET request
-    if (method === 'GET' && url === '/') {
+    res.setHeader('Content-Type', 'application/json');
+
+    if (method === 'GET' && parsedUrl.pathname === '/') {
         res.statusCode = 200;
-        res.setHeader('Content-Type', 'application/json');
-        res.end(JSON.stringify({ message: 'Welcome to the Home Page' }));
+        res.end(JSON.stringify({ message: 'GET request - Home route' }));
+    } else if (method === 'GET' && parsedUrl.pathname === '/about') {
+        res.statusCode = 200;
+        res.end(JSON.stringify({ message: 'GET request - About page' }));
     } else {
         res.statusCode = 404;
         res.end(JSON.stringify({ message: 'Route not found' }));
     }
 });
 
-// Start listening on the defined port
-server.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
+server.listen(PORT, () => console.log(`Server is listening at: http://localhost:${PORT}`));
