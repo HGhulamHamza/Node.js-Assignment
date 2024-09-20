@@ -35,25 +35,25 @@ const server = createServer((req, res) => {
         });
 
     // Handle PUT request - Update an existing product by ID
-    // } else if (method === 'PUT' && parsedUrl.pathname.startsWith('/api/products/')) {
-    //     const productId = parsedUrl.pathname.split('/').pop(); // Get product ID from URL
-    //     let body = '';
-    //     req.on('data', chunk => {
-    //         body += chunk.toString();
-    //     });
-    //     req.on('end', () => {
-    //         const updatedProduct = JSON.parse(body);
-    //         const productIndex = products.findIndex(p => p.id === productId); // Find product by ID
+    } else if (method === 'PUT' && parsedUrl.pathname.startsWith('/api/products/')) {
+        const productId = parsedUrl.pathname.split('/').pop(); // Get product ID from URL
+        let body = '';
+        req.on('data', chunk => {
+            body += chunk.toString();
+        });
+        req.on('end', () => {
+            const updatedProduct = JSON.parse(body);
+            const productIndex = products.findIndex(p => p.id === productId); // Find product by ID
 
-    //         if (productIndex !== -1) {
-    //             products[productIndex] = { ...products[productIndex], ...updatedProduct }; // Update the product
-    //             res.statusCode = 200;
-    //             res.end(JSON.stringify({ message: `PUT request - Product with ID ${productId} updated`, data: products[productIndex] }));
-    //         } else {
-    //             res.statusCode = 404;
-    //             res.end(JSON.stringify({ message: `Product with ID ${productId} not found` }));
-    //         }
-    //     });
+            if (productIndex !== -1) {
+                products[productIndex] = { ...products[productIndex], ...updatedProduct }; // Update the product
+                res.statusCode = 200;
+                res.end(JSON.stringify({ message: `PUT request - Product with ID ${productId} updated`, data: products[productIndex] }));
+            } else {
+                res.statusCode = 404;
+                res.end(JSON.stringify({ message: `Product with ID ${productId} not found` }));
+            }
+        });
 
     // Route not found
     } else {
