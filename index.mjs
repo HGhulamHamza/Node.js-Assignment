@@ -54,6 +54,19 @@ const server = createServer((req, res) => {
                 res.end(JSON.stringify({ message: `Product with ID ${productId} not found` }));
             }
         });
+         // Handle DELETE request - Delete a product by ID
+    } else if (method === 'DELETE' && parsedUrl.pathname.startsWith('/api/products/')) {
+        const productId = parsedUrl.pathname.split('/').pop(); // Get product ID from URL
+        const productIndex = products.findIndex(p => p.id === productId); // Find product by ID
+
+        if (productIndex !== -1) {
+            products.splice(productIndex, 1); // Remove the product from the array
+            res.statusCode = 200;
+            res.end(JSON.stringify({ message: `DELETE request - Product with ID ${productId} deleted` }));
+        } else {
+            res.statusCode = 404;
+            res.end(JSON.stringify({ message: `Product with ID ${productId} not found` }));
+        }
 
     // Route not found
     } else {
