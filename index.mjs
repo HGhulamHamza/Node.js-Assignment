@@ -75,4 +75,4 @@ const server = createServer((req, res) => {
     }
 });
 
-server.listen(PORT, () => console.log(`Server listening at: http://localhost:${PORT}`));
+server.listen(PORT, () => console.log(`Server is listening at: http://localhost:${PORT}`));
