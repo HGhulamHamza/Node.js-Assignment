@@ -1,4 +1,4 @@
-import { createServer } from 'http';
+import { createServer } from 'node:http';
 
 const PORT = 4000;
 
@@ -14,7 +14,19 @@ const server = createServer((req, res) => {
     } else if (method === 'GET' && parsedUrl.pathname === '/about') {
         res.statusCode = 200;
         res.end(JSON.stringify({ message: 'GET request - About page' }));
-    } else {
+    } else if (method === 'POST' && parsedUrl.pathname === '/api/products') {
+        let body = '';
+        req.on('data', chunk => {
+            body += chunk.toString();
+        });
+        req.on('end', () => {
+            const newProduct = JSON.parse(body);  
+            res.statusCode = 201;
+            res.end(JSON.stringify({ message: 'POST request - New product added', data: newProduct }));
+        });
+    }
+    
+        else {
         res.statusCode = 404;
         res.end(JSON.stringify({ message: 'Route not found' }));
     }
